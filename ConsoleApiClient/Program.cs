@@ -4,27 +4,38 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("GetAll: ");
-            GetAsync().Wait();
-            Console.ReadLine();
+            try
+            {
+                Console.WriteLine("GetAsync to an API: ");
+                GetAsync().Wait();
+                Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
         }
 
         private static async Task<string> GetAsync()
         {
-            string stringResponse = string.Empty;
-
-            using (HttpClient client = new HttpClient())
-            {
-                HttpResponseMessage response = await client.GetAsync("https://dog.ceo/api/breeds/list/all");
-                stringResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(stringResponse);
-            }
+            HttpResponseMessage response = await GetHttpResponseMessage();
+            string stringResponse = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(stringResponse);
 
             return stringResponse;
+        }
+
+        private static async Task<HttpResponseMessage> GetHttpResponseMessage()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                return await client.GetAsync("https://dog.ceo/api/breeds/list/all");
+            }
         }
     }
 }
