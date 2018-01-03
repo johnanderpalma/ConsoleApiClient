@@ -19,7 +19,7 @@
 
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("https://dog.ceo/api/breeds/list/all");
+                HttpResponseMessage response = await client.GetAsync("https://dog.ceo/api/breeds/list/all");
                 stringResponse = await response.Content.ReadAsStringAsync();
                 Console.WriteLine(stringResponse);
             }
